@@ -81,7 +81,7 @@ module.exports = {
   		adminApp: './src/adminApp.js'
   	}
   }
-   ```
+  ```
 
 ### 核心概念之output
 
@@ -276,7 +276,7 @@ module.exports = {
 
 ```
 
-#### 资源解析之解析LESS
+### 资源解析之解析LESS
 
 less-loader 用于将less转换为css
 
@@ -310,7 +310,7 @@ module.exports = {
 }
 ```
 
-#### 资源解析之解析图片与字体资源
+### 资源解析之解析图片与字体资源
 
 file-loader 用于处理文件
 
@@ -354,4 +354,270 @@ module.exports = {
 
 ```
 
-#### 
+### webpack中的文件监听
+
+文件监听是在发现源码发生变化是，自动重新构建出新的输出文件。
+
+webpack开启监听模式，有两种方式：
+
+- 启动webpack命令时，带上`--watch`参数
+- 在配置webpack.config.js中设置`watch:true`
+
+缺陷就是每次需要手动刷新浏览器
+
+#### 文件监听的原理分析
+
+轮询判断文件的最后编辑时间是否变化
+
+某个文件发生了变化，并不会立刻告诉监听者，而是先缓存起来，等`aggregateTimeout`
+
+```js
+// webpack.config.js
+module.export = {
+	// 默认false，也就是不开启
+	watch: true,
+	// 只有开启监听模式时，watchOptions才有意义
+	watchOptions: {
+		// 默认为空，不监听的文件或者文件夹，支持正则匹配
+		ingored: /node_modules/，
+		// 监听到变化发生后会等待300ms再去执行，默认300ms
+		aggregateTimeout: 300,
+		// 判断文件是否发生变化是通过不停询问系统指定文件有没有变化实现的，默认没秒问1000次
+		poll: 1000
+	}
+}
+```
+
+### 热更新：webpack-dev-server
+
+WDS不刷新浏览器
+
+WDS不输出文件，而是放在内存中
+
+使用HotModuleReplacementPlugin插件
+
+#### 安装依赖
+
+```bash
+npm i webpack-dev-server -D
+```
+
+#### 用法
+
+```js
+'use strict'
+const path = require('path')
+const webpack = require('webpack')
+module.exports = {
+	// ...
+	mode: 'development',
+	plugins: [new webpack.HotModuleReplacementPlugin()],
+	devServer: {
+		contentBase: './dist',
+		hot: true,
+	},
+}
+
+```
+
+### 热更新：使用webpack-dev-middleware
+
+WDM将webpack输出的文件传输给服务器
+
+适用于灵活的定制场景
+
+```js
+const express = require('express')
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+
+const app = express()
+const config = require('./webpack.config.js')
+const complier = webpack(config)
+
+app.use(
+	webpackDevMiddleware(complier, {
+		publicPath: config.output.publicPath,
+	})
+)
+
+app.listen(3000, function () {
+	console.log('Example app listening on port 3000\n')
+})
+
+```
+
+### 热更新原理
+
+![批注 2020-04-23 211644](/批注 2020-04-23 211644.png)
+
+### 文件指纹策略：chunkhash、contenthash和hash
+
+文件指纹就是打包后输出的文件名的后缀
+
+文件指纹如何生成
+
+![](/批注 2020-04-23 213013.png)
+
+#### JS的文件指纹设置
+
+设置output的filename，使用`[chunkname]`
+
+#### CSS的文件指纹设置
+
+设置MiniCssExtractPlugin的filename，使用`[contenthash]`
+
+使用MiniCssExtractPlugin.loader替换style-loader
+
+#### 图片和字体的文件指纹设置
+
+![](/批注 2020-04-23 220943.png)
+
+文件指纹的设置一般用于生产环境
+
+```js
+'use strict'
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+module.exports = {
+	entry: {
+		app: './src/index.js',
+		search: './src/search.js',
+	},
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: '[name]_[chunkhash:8].js',
+	},
+	module: {
+		rules: [
+			{ test: /\.js$/, use: 'babel-loader' },
+			{
+				test: /\.css$/,
+				use: [MiniCssExtractPlugin.loader, 'css-loader'],
+			},
+			{
+				test: /\.less$/,
+				use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+			},
+			{
+				test: /\.(png|jpg|svg|gif)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'img/[name]_[hash:8].[ext]',
+						},
+					},
+				],
+			},
+			{
+				test: /\.(woff|woff2|eot|ttf|otf)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: '[name]_[hash:8].[ext]',
+						},
+					},
+				],
+			},
+		],
+	},
+	mode: 'production',
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: `[name]_[contenthash:8].css`,
+		}),
+	],
+}
+
+```
+
+### 文件压缩
+
+#### JS文件压缩
+
+webpack4 production下内置了`uglifyjs-webpack-plugin`
+
+#### CSS 文件的压缩
+
+使用`optimise-css-assets-webpack-plugin`
+
+同时使用`cssnano`预处理器
+
+```js
+'use strict'
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+module.exports = {
+	// ...
+	mode: 'production',
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: `[name]_[contenthash:8].css`,
+		}),
+		new OptimizeCssAssetsWebpackPlugin({
+			assetNameRegExp: /\.css$/g,
+			cssProcessor: require('cssnano'),
+		}),
+	],
+}
+
+```
+
+#### html文件的压缩
+
+修改html-webpack-plugin，设置压缩参数
+
+```js
+'use strict'
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+module.exports = {
+	entry: {
+		app: './src/index.js',
+		search: './src/search.js',
+	},
+	output: {
+		path: path.join(__dirname, 'dist'),
+		filename: '[name]_[chunkhash:8].js',
+	},
+ 	// ...
+	mode: 'production',
+	plugins: [
+	 	// ...
+        // 多个html，需配置对应HtmlWebpackPlugin
+		new HtmlWebpackPlugin({
+			template: path.join(__dirname, 'src/search.html'),
+			filename: 'search.html',
+			chunks: ['search'],
+			inject: true,
+			minify: {
+				html5: true,
+				collapseWhitespace: true,
+				preserveLineBreaks: false,
+				minifyCSS: true,
+				minifyJS: true,
+				removeComments: false,
+			},
+		}),
+		new HtmlWebpackPlugin({
+			template: path.join(__dirname, 'src/index.html'),
+			filename: 'index.html',
+			chunks: ['app'],
+			inject: true,
+			minify: {
+				html5: true,
+				collapseWhitespace: true,
+				preserveLineBreaks: false,
+				minifyCSS: true,
+				minifyJS: true,
+				removeComments: false,
+			},
+		}),
+	],
+}
+```
+
