@@ -2,7 +2,7 @@
 typora-root-url: ..\images
 ---
 
-### webpack安装
+### 1.webpack安装
 
 ```bash
 # 创建工程
@@ -17,7 +17,7 @@ npm install webpack webpack-cli --save-dev
 ./node_modules/.bin/webpack -v // 4.43.0
 ```
 
-### 一个使用webpack的简单例子
+### 2.一个使用webpack的简单例子
 
 ```javascript
 // webpack.config.js
@@ -35,7 +35,7 @@ module.exports = {
 
 使用webpack命令打包之后会在根目录下生成一个dist目录，dist里面有一个叫bundle.js的文件
 
-### 通过npm script 运行webpack
+### 3.通过npm script 运行webpack
 
 ```json
 {
@@ -58,7 +58,7 @@ module.exports = {
 
 通过npm run build 运行构建，原理：模块局部安装会在`node_modules/.bin`目录创建软连接
 
-### 核心概念之entry
+### 4.核心概念之entry
 
 依赖图的入口是entry
 
@@ -83,7 +83,7 @@ module.exports = {
   }
   ```
 
-### 核心概念之output
+### 5.核心概念之output
 
 output用来告诉webpack如何将编译后的文件输出到磁盘
 
@@ -124,7 +124,7 @@ output用来告诉webpack如何将编译后的文件输出到磁盘
   }
   ```
 
-### 核心概念之Loaders
+### 5.核心概念之Loaders
 
 webpack开箱即用只支持`js`和`JSON`两种文件类型，通过`Loaders`去支持其他文件类型并且把它们转换为有效的模块，并且可以添加到依赖图中。
 
@@ -157,9 +157,11 @@ module.exports = {
 
 ![](/批注 2020-04-22 215936.png)
 
-### 核心概念之Plugins
+### 7.核心概念之Plugins
 
 插件用于bundle文件的优化，资源管理和环境变量的注入
+
+在webpack构建流程中的**特定时机注入扩展逻辑**来改变构建结果或做你想要做的事情
 
 作用于整个构建过程
 
@@ -181,7 +183,7 @@ module.exports = {
 
 ![](/批注 2020-04-22 220453.png)
 
-### 核心概念之Mode
+### 8.核心概念之Mode
 
 Mode用来指定当前的构建环境是：production、development He none。
 
@@ -191,7 +193,7 @@ Mode用来指定当前的构建环境是：production、development He none。
 
 ![](/批注 2020-04-22 221447.png)
 
-### 资源解析之解析ES6
+### 9.资源解析之解析ES6
 
 使用babel-loader
 
@@ -211,7 +213,7 @@ const path = require('path')
 module.exports = {
 	//...
 	module: {
-		rules: [{ test: /\.js$/, use: 'babel-loader' }],
+		rules: [{ test: /\.jsx?$/, use: 'babel-loader', exclude: /node_modules/ //排除 node_modules 目录 }],
 	},
 	mode: 'production',
 }
@@ -226,7 +228,7 @@ module.exports = {
 }
 ```
 
-### 资源解析之解析JSX
+### 10.资源解析之解析JSX
 
 #### 安装所需依赖
 
@@ -243,7 +245,7 @@ npm i @babel/preset-react -D
 }
 ```
 
-### 资源解析之解析CSS
+### 11.资源解析之解析CSS
 
 css-loader 用于加载.css文件，并且转换成commonjs对象
 
@@ -276,7 +278,7 @@ module.exports = {
 
 ```
 
-### 资源解析之解析LESS
+### 12.资源解析之解析LESS
 
 less-loader 用于将less转换为css
 
@@ -310,7 +312,7 @@ module.exports = {
 }
 ```
 
-### 资源解析之解析图片与字体资源
+### 13.资源解析之解析图片与字体资源
 
 file-loader 用于处理文件
 
@@ -354,7 +356,7 @@ module.exports = {
 
 ```
 
-### webpack中的文件监听
+### 14.webpack中的文件监听
 
 文件监听是在发现源码发生变化是，自动重新构建出新的输出文件。
 
@@ -388,7 +390,7 @@ module.export = {
 }
 ```
 
-### 热更新：webpack-dev-server
+### 15.热更新：webpack-dev-server
 
 WDS不刷新浏览器
 
@@ -420,7 +422,7 @@ module.exports = {
 
 ```
 
-### 热更新：使用webpack-dev-middleware
+### 16.热更新：使用webpack-dev-middleware
 
 WDM将webpack输出的文件传输给服务器
 
@@ -447,11 +449,11 @@ app.listen(3000, function () {
 
 ```
 
-### 热更新原理
+#### 热更新原理
 
 ![批注 2020-04-23 211644](/批注 2020-04-23 211644.png)
 
-### 文件指纹策略：chunkhash、contenthash和hash
+### 17.文件指纹策略：chunkhash、contenthash和hash
 
 文件指纹就是打包后输出的文件名的后缀
 
@@ -464,6 +466,8 @@ app.listen(3000, function () {
 设置output的filename，使用`[chunkname]`
 
 #### CSS的文件指纹设置
+
+使用MiniCssExtractPlugin提取css文件
 
 设置MiniCssExtractPlugin的filename，使用`[contenthash]`
 
@@ -533,7 +537,7 @@ module.exports = {
 
 ```
 
-### 文件压缩
+### 18.文件压缩
 
 #### JS文件压缩
 
@@ -596,11 +600,12 @@ module.exports = {
 			inject: true,
 			minify: {
 				html5: true,
-				collapseWhitespace: true,
+				collapseWhitespace: true, // 是否折叠空白
 				preserveLineBreaks: false,
 				minifyCSS: true,
 				minifyJS: true,
 				removeComments: false,
+                removeAttributeQuotes: false, //是否删除属性的双引号
 			},
 		}),
 		new HtmlWebpackPlugin({
