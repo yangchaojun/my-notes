@@ -1,32 +1,32 @@
 ### 1.自动清理构建目录产物
 
-#### 通过npm script 清理构建目录
+#### 通过 npm script 清理构建目录
 
 - rm -rf ./dist && webpack
-- rimraf ./dist && webpack （需要安装rimraf）
+- rimraf ./dist && webpack （需要安装 rimraf）
 
-#### 使用clean-webpack-plugin
+#### 使用 clean-webpack-plugin
 
-- 默认会删除output指定的输出目录
+- 默认会删除 output 指定的输出目录
 
-### 2.devtool的作用
+### 2.devtool 的作用
 
 `devtool`中的一些设置，可以帮助开发者将编译后的代码映射回原始源代码，不同的值会明显影响到构建和重新构建的速度。
 
 ```js
 //webpack.config.js
 module.exports = {
-    devtool: 'cheap-module-eval-source-map' //开发环境下使用
+  devtool: 'cheap-module-eval-source-map' //开发环境下使用
 }
 ```
 
 生产环境可以使用 `none` 或者是 `source-map`，使用 `source-map` 最终会单独打包出一个 `.map` 文件，我们可以根据报错信息和此 `map` 文件，进行错误解析，定位到源代码。
 
-`source-map` 和 `hidden-source-map` 都会打包生成单独的 `.map` 文件，区别在于，`source-map` 会在打包出的js文件中增加一个引用注释，以便开发工具知道在哪里可以找到它。`hidden-source-map` 则不会在打包的js中增加引用注释。
+`source-map` 和 `hidden-source-map` 都会打包生成单独的 `.map` 文件，区别在于，`source-map` 会在打包出的 js 文件中增加一个引用注释，以便开发工具知道在哪里可以找到它。`hidden-source-map` 则不会在打包的 js 中增加引用注释。
 
-但是我们一般不会直接将 `.map` 文件部署到CDN，因为会直接映射到源码，更希望将`.map` 文件传到错误解析系统，然后根据上报的错误信息，直接解析到出错的源码位置。
+但是我们一般不会直接将 `.map` 文件部署到 CDN，因为会直接映射到源码，更希望将`.map` 文件传到错误解析系统，然后根据上报的错误信息，直接解析到出错的源码位置。
 
-[其他devtool的值](http://webpack.html.cn/configuration/devtool.html)
+[其他 devtool 的值](http://webpack.html.cn/configuration/devtool.html)
 
 ### 静态资源拷贝
 
@@ -45,10 +45,10 @@ module.exports = {
 ```js
 //webpack.config.js
 module.exports = {
-    //....
-    resolve: {
-        modules: ['./src/components', 'node_modules'] //从左到右依次查找
-    }
+  //....
+  resolve: {
+    modules: ['./src/components', 'node_modules'] //从左到右依次查找
+  }
 }
 ```
 
@@ -61,12 +61,12 @@ module.exports = {
 ```js
 //webpack.config.js
 module.exports = {
-    //....
-    resolve: {
-        alias: {
-            'react-native': '@my/react-native-web' //这个包名是我随便写的哈
-        }
+  //....
+  resolve: {
+    alias: {
+      'react-native': '@my/react-native-web' //这个包名是我随便写的哈
     }
+  }
 }
 ```
 
@@ -83,15 +83,15 @@ import { View, ListView, StyleSheet, Animated } from 'react-native';
 
 #### 3.extensions
 
-适配多端的项目中，可能会出现 `.web.js`, `.wx.js`，例如在转web的项目中，我们希望首先找 `.web.js`，如果没有，再找 `.js`。我们可以这样配置:
+适配多端的项目中，可能会出现 `.web.js`, `.wx.js`，例如在转 web 的项目中，我们希望首先找 `.web.js`，如果没有，再找 `.js`。我们可以这样配置:
 
 ```js
 //webpack.config.js
 module.exports = {
-    //....
-    resolve: {
-        extensions: ['web.js', '.js'] //当然，你还可以配置 .json, .css
-    }
+  //....
+  resolve: {
+    extensions: ['web.js', '.js'] //当然，你还可以配置 .json, .css
+  }
 }
 ```
 
@@ -101,7 +101,7 @@ module.exports = {
 import dialog from '../dialog';
 ```
 
-当然，配置 `extensions`，我们就可以缺省文件后缀，在导入语句没带文件后缀时，会自动带上`extensions` 中配置的后缀后，去尝试访问文件是否存在，因此要将高频的后缀放在前面，并且数组不要太长，减少尝试次数。如果没有配置 `extensions`，默认只会找对应的js文件。
+当然，配置 `extensions`，我们就可以缺省文件后缀，在导入语句没带文件后缀时，会自动带上`extensions` 中配置的后缀后，去尝试访问文件是否存在，因此要将高频的后缀放在前面，并且数组不要太长，减少尝试次数。如果没有配置 `extensions`，默认只会找对应的 js 文件。
 
 #### 4.enforceExtension
 
@@ -113,9 +113,9 @@ import dialog from '../dialog';
 
 ```json
 {
-    "style": "dist/css/bootstrap.css",
-    "sass": "scss/bootstrap.scss",
-    "main": "dist/js/bootstrap",
+  "style": "dist/css/bootstrap.css",
+  "sass": "scss/bootstrap.scss",
+  "main": "dist/js/bootstrap"
 }
 ```
 
@@ -128,16 +128,16 @@ import dialog from '../dialog';
 ```js
 //webpack.config.js
 module.exports = {
-    //....
-    resolve: {
-        mainFields: ['style', 'main'] 
-    }
+  //....
+  resolve: {
+    mainFields: ['style', 'main']
+  }
 }
 ```
 
 ### 区分不同的环境
 
-------
+---
 
 目前为止我们 `webpack` 的配置，都定义在了 `webpack.config.js` 中，对于需要区分是开发环境还是生产环境的情况，我们根据 `process.env.NODE_ENV` 去进行了区分配置，但是配置文件中如果有多处需要区分环境的配置，这种显然不是一个好办法。
 
@@ -195,13 +195,13 @@ merge({
 
 ```js
 //webpack.config.dev.js
-const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.config.base');
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.config.base')
 
 module.exports = merge(baseWebpackConfig, {
-    mode: 'development'
-    //...其它的一些配置
-});
+  mode: 'development'
+  //...其它的一些配置
+})
 ```
 
 然后修改我们的 `package.json`，指定对应的 `config` 文件：
@@ -233,40 +233,40 @@ module.exports = merge(baseWebpackConfig, {
 
 ```js
 //webpack.config.dev.js
-const webpack = require('webpack');
+const webpack = require('webpack')
 module.exports = {
-    plugins: [
-        new webpack.DefinePlugin({
-            DEV: JSON.stringify('dev'), //字符串
-            FLAG: 'true' //FLAG 是个布尔类型
-        })
-    ]
+  plugins: [
+    new webpack.DefinePlugin({
+      DEV: JSON.stringify('dev'), //字符串
+      FLAG: 'true' //FLAG 是个布尔类型
+    })
+  ]
 }
 
 //index.js
-if(DEV === 'dev') {
-    //开发环境
-}else {
-    //生产环境
+if (DEV === 'dev') {
+  //开发环境
+} else {
+  //生产环境
 }
 ```
 
-### 利用webpack解决跨域问题
+### 利用 webpack 解决跨域问题
 
-假设前端在3000端口，服务端在4000端口，我们通过 `webpack` 配置的方式去实现跨域。
+假设前端在 3000 端口，服务端在 4000 端口，我们通过 `webpack` 配置的方式去实现跨域。
 
 首先，我们在本地创建一个 `server.js`：
 
 ```js
-let express = require('express');
+let express = require('express')
 
-let app = express();
+let app = express()
 
 app.get('/api/user', (req, res) => {
-    res.json({name: '刘小夕'});
-});
+  res.json({ name: '刘小夕' })
+})
 
-app.listen(4000);
+app.listen(4000)
 ```
 
 执行代码(`run code`)，现在我们可以在浏览器中访问到此接口: `http://localhost:4000/api/user`。
@@ -275,10 +275,10 @@ app.listen(4000);
 
 ```js
 //需要将 localhost:3000 转发到 localhost:4000（服务端） 端口
-fetch("/api/user")
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+fetch('/api/user')
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((err) => console.log(err))
 ```
 
 我们希望通过配置代理的方式，去访问 4000 的接口。
@@ -290,32 +290,32 @@ fetch("/api/user")
 ```js
 //webpack.config.js
 module.exports = {
-    //...
-    devServer: {
-        proxy: {
-            "/api": "http://localhost:4000"
-        }
+  //...
+  devServer: {
+    proxy: {
+      '/api': 'http://localhost:4000'
     }
+  }
 }
 ```
 
 重新执行 `npm run dev`，可以看到控制台打印出来了 `{name: "刘小夕"}`，实现了跨域。
 
-大多情况，后端提供的接口并不包含  `/api`，即：`/user`，`/info`、`/list` 等，配置代理时，我们不可能罗列出每一个api。
+大多情况，后端提供的接口并不包含 `/api`，即：`/user`，`/info`、`/list` 等，配置代理时，我们不可能罗列出每一个 api。
 
 修改我们的服务端代码，并重新执行。
 
 ```js
 //server.js
-let express = require('express');
+let express = require('express')
 
-let app = express();
+let app = express()
 
 app.get('/user', (req, res) => {
-    res.json({name: '刘小夕'});
-});
+  res.json({ name: '刘小夕' })
+})
 
-app.listen(4000);
+app.listen(4000)
 ```
 
 尽管后端的接口并不包含 `/api`，我们在请求后端接口时，仍然以 `/api` 开头，在配置代理时，去掉 `/api`，修改配置:
@@ -323,18 +323,249 @@ app.listen(4000);
 ```js
 //webpack.config.js
 module.exports = {
-    //...
-    devServer: {
-        proxy: {
-            '/api': {
-                target: 'http://localhost:4000',
-                pathRewrite: {
-                    '/api': ''
-                }
-            }
+  //...
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        pathRewrite: {
+          '/api': ''
         }
+      }
     }
+  }
 }
 ```
 
 重新执行 `npm run dev`，在浏览器中访问： `http://localhost:3000/`，控制台中也打印出了`{name: "刘小夕"}`，跨域成功，
+
+### 2.PostCSS 插件 autoprefixer 自动补齐样式
+
+安装依赖
+
+```bash
+npm i postcss-loader autoprefixer -D
+```
+
+```js
+'use strict'
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+module.exports = {
+  // 其他配置
+  module: {
+    rules: [
+      { test: /\.js$/, use: 'babel-loader' },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'less-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')()]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+#### 移动端 CSS px 自动转换成 rem
+
+使用 px2rem-loader
+
+页面渲染时计算根元素的`font-size`值
+
+- 可以使用手淘的 lib-flexible 库
+- https://github.com/amfe/lib-flexible
+
+```js
+module.exports = {
+  // 其他配置
+  module: {
+    rules: [
+      { test: /\.js$/, use: 'babel-loader' },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'less-loader',
+          {
+            loader: 'px2rem-loader',
+            options: {
+              remUnit: 75,
+              remPrecision: 8 // 小数点位数
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### 静态资源内联
+
+#### 意义
+
+代码层面：
+
+- 页面框架的初始化脚本
+- 上报相关打点
+- css 内联便面页面闪动
+
+请求层面：
+
+- 小图片或者字体内联（url-loader)
+
+#### JS 和 Html 的内联
+
+安装依赖
+
+```js
+npm i raw-loader@0.5.1 -D
+```
+
+用法
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%=require('raw-loader!./meta.html')%>
+    <title>Index page</title>
+  </head>
+  <body></body>
+</html>
+```
+
+#### CSS 内联
+
+方案一：借助 style-loader
+
+```
+'use strict'
+const path = require('path')
+module.exports = {
+	// ...
+	module: {
+		rules: [
+			{ test: /\.js$/, use: 'babel-loader' },
+			{ // style-loader 在css-loader之前
+				test: /\.css$/,
+				use: [{
+					loader: 'style-loader',
+					options: {
+						insertAt: 'top', //样式插入到<head>
+						singleon: true // 将所有的style标签合并
+					}
+				}, 'css-loader'],
+			},
+		],
+	},
+	mode: 'production',
+}
+```
+
+方案二：html-inline-css-webpack-plugin
+
+### 多页面应用打包同样方案
+
+多页面应用（MPA)概念
+
+每一次页面跳转的时候，后台服务器都会返回一个新的 html 文档，
+
+这种类型的网站也就是多页网站，也叫多页应用。
+
+#### 多页面打包基本方案
+
+每个页面对应一个 entry,一个 html-webpack-plugin
+
+缺点：每次新增或删除页面需要改 webpack 配置
+
+#### 多页面打包通用方案
+
+动态获取 entry 和设置 html-webpack-plugin 数量
+
+利用 glob.sync
+
+- entry：glob.sync(path.join(\_\_dirname, './src/\*/index.js'))
+
+```js
+// 核心方法
+onst setPMA = () => {
+	const entry = {}
+	const htmlWebpackPlugins = []
+	const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'))
+	Object.keys(entryFiles).map((index) => {
+		const entryFile = entryFiles[index]
+		const match = entryFiles[index].match(/src\/(.*)\/index\.js/)
+		const pageName = match && match[1]
+		console.log(pageName)
+		entry[pageName] = entryFile
+		htmlWebpackPlugins.push(
+			new HtmlWebpackPlugin({
+				template: path.join(__dirname, `./src/${pageName}/index.html`),
+				filename: `${pageName}.html`,
+				chunks: [pageName],
+				inject: true,
+				minify: {
+					html5: true,
+					collapseWhitespace: true,
+					preserveLineBreaks: false,
+					minifyCSS: true,
+					minifyJS: true,
+					removeComments: false,
+				},
+			})
+		)
+	})
+	return {
+		entry,
+		htmlWebpackPlugins,
+	}
+}
+const { entry, htmlWebpackPlugins } = setPMA()
+```
+
+### 使用 source map
+
+作用：通过 source map 定位到源代码
+
+[科普](http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html)
+
+开发环境开启，线上环境关闭
+
+- 线上怕排查问题的时候可以将 sourcemap 上传到错误监控系统
+
+#### source map 关键字
+
+- eval：使用 eval 包裹模块代码
+- source map：产生.map 文件
+- cheap：不包括列信息
+- inline：将.map 作为 DataURI 嵌入，不单独生成.map 文件
+- module：包括 loader 的 sourcemap
+
+#### source map 类型
+
+![](C:\Users\yangchaojun\Desktop\my-notes\images\批注 2020-04-29 223510.png)
+
+```js
+```
