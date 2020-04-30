@@ -36,6 +36,28 @@ module.exports = {
 
 [CopyWebpackPlugin](https://webpack.js.org/plugins/copy-webpack-plugin/)
 
+```js
+//webpack.config.js
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+module.exports = {
+    //...
+    plugins: [
+        new CopyWebpackPlugin([
+            {
+                from: 'public/js/*.js',
+                to: path.resolve(__dirname, 'dist', 'js'),
+                flatten: true, //这里说一下 flatten 这个参数，设置为 true，那么它只会拷贝文件，而不会把文件夹路径都拷贝上，大家可以不设置 flatten 时，看下构建结果
+            },
+            //还可以继续配置其它要拷贝的文件
+        ], {
+            ignore: ['other.js'] // 如果我们要拷贝一个目录下的很多文件，但是想过滤掉某个或某些文件，那么 CopyWebpackPlugin 还为我们提供了 ignore 参数
+        })
+    ]
+}
+```
+
+
+
 ### 4.ProvidePlugin
 
 ### 5.resolve 配置
