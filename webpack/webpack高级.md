@@ -1,3 +1,7 @@
+---
+typora-root-url: ..\images
+---
+
 ### 1.自动清理构建目录产物
 
 #### 通过 npm script 清理构建目录
@@ -28,13 +32,13 @@ module.exports = {
 
 [其他 devtool 的值](http://webpack.html.cn/configuration/devtool.html)
 
-### 静态资源拷贝
+### 3.静态资源拷贝
 
 [CopyWebpackPlugin](https://webpack.js.org/plugins/copy-webpack-plugin/)
 
-### ProvidePlugin
+### 4.ProvidePlugin
 
-### resolve 配置
+### 5.resolve 配置
 
 `resolve`配置`webpack`如何寻找模块对应的文件。`webpack`内置`JavaScript`模块化语法解析功能，默认会采用模块化标准用约定好的规则去寻找，但开发者可以根据自己的需要修改默认规则。
 
@@ -135,7 +139,7 @@ module.exports = {
 }
 ```
 
-### 区分不同的环境
+### 6.区分不同的环境
 
 ---
 
@@ -218,7 +222,7 @@ module.exports = merge(baseWebpackConfig, {
 
 你可以使用 `merge` 合并，也可以使用 `merge.smart` 合并，`merge.smart` 在合并`loader`时，会将同一匹配规则的进行合并，`webpack-merge` 的说明文档中给出了详细的示例。
 
-### 定义环境变量
+### 7.定义环境变量
 
 很多时候，我们在开发环境中会使用预发环境或者是本地的域名，生产环境中使用线上域名，我们可以在 `webpack` 定义环境变量，然后在代码中使用。
 
@@ -251,7 +255,7 @@ if (DEV === 'dev') {
 }
 ```
 
-### 利用 webpack 解决跨域问题
+### 8.利用 webpack 解决跨域问题
 
 假设前端在 3000 端口，服务端在 4000 端口，我们通过 `webpack` 配置的方式去实现跨域。
 
@@ -339,7 +343,7 @@ module.exports = {
 
 重新执行 `npm run dev`，在浏览器中访问： `http://localhost:3000/`，控制台中也打印出了`{name: "刘小夕"}`，跨域成功，
 
-### 2.PostCSS 插件 autoprefixer 自动补齐样式
+### 9.PostCSS 插件 autoprefixer 自动补齐样式
 
 安装依赖
 
@@ -382,7 +386,7 @@ module.exports = {
 }
 ```
 
-#### 移动端 CSS px 自动转换成 rem
+### 10.移动端 CSS px 自动转换成 rem
 
 使用 px2rem-loader
 
@@ -421,7 +425,7 @@ module.exports = {
 }
 ```
 
-### 静态资源内联
+### 11.静态资源内联
 
 #### 意义
 
@@ -486,7 +490,7 @@ module.exports = {
 
 方案二：html-inline-css-webpack-plugin
 
-### 多页面应用打包同样方案
+### 12.多页面应用打包同样方案
 
 多页面应用（MPA)概念
 
@@ -545,7 +549,7 @@ onst setPMA = () => {
 const { entry, htmlWebpackPlugins } = setPMA()
 ```
 
-### 使用 source map
+### 13.使用 source map
 
 作用：通过 source map 定位到源代码
 
@@ -565,7 +569,8 @@ const { entry, htmlWebpackPlugins } = setPMA()
 
 #### source map 类型
 
-![](C:\Users\yangchaojun\Desktop\my-notes\images\批注 2020-04-29 223510.png)
+![](.\批注 2020-04-29 223510.png)
 
 ```js
+
 ```
