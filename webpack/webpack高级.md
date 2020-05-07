@@ -243,3 +243,82 @@ const { entry, htmlWebpackPlugins } = setPMA()
 
 ```
 
+### 提取公共资源
+
+#### 基础库分离
+
+- 思路：将react、react-dom基础包通过cdn引入，不打入bundle中
+- 方法：使用html-webpack-externals-plugin
+
+html需引入cdn
+
+```js
+	new HtmlWebpackExternalsPlugin({
+			externals: [
+				{
+					module: 'react',
+					entry:
+						'https://cdn.bootcdn.net/ajax/libs/react/16.13.1/umd/react.production.min.js',
+					global: 'React',
+				},
+				{
+					module: 'react-dom',
+					entry:
+						'https://cdn.bootcdn.net/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js',
+					global: 'ReactDOM',
+				},
+			],
+		}),
+```
+
+#### 利用SplitChunksPlugin进行公共脚本分离
+
+Webpack4内置的，替代CommonsChunkPlugin插件
+
+chunks参数说明：
+
+- async 异步引入的库进行分离（默认）
+- initial 同步引入的库进行分离
+- all 所有引入的库进行分离（推荐）
+
+利用SplitChunksPlugin 分离基础包
+
+test: 匹配出需要分离的包
+
+```js
+module.exports = {
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /(react)|(react-dom)/,
+					name: 'vendors',
+					chunks: 'all',
+				},
+			},
+		},
+	},
+}
+```
+
+minChunks: 设置最小引用次数为2次
+
+minSize: 分离的包体积的大小
+
+```js
+module.exports = {
+	optimization: {
+		splitChunks: {
+			minSize: 0,
+			cacheGroups: {
+				commons: {
+					name: 'commons',
+					chunks: 'all',
+					minChunks: 2
+				},
+			},
+		},
+	},
+}
+```
+
