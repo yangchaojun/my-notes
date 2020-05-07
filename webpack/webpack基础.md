@@ -130,6 +130,8 @@ webpack开箱即用只支持`js`和`JSON`两种文件类型，通过`Loaders`去
 
 `Loaders`本身是一个函数，接受源文件作为参数，返回转换的结果。
 
+`loader`的执行顺序是从右向左执行的，也就是后面的`loader`先执行
+
 #### Loaders的用法
 
 ```js
