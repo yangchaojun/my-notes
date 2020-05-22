@@ -69,6 +69,22 @@ babel 总共分为三个阶段：解析，转换，生成。
 { "presets": ["@babel/preset-env"]}
 ```
 
+```js
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry" // 配置选项，可以实现polyfill的按需加载
+      }
+    ]
+  ]
+}
+
+```
+
+
+
 #### @babel/polyfill
 
 > babel 编译过程处理第一种情况 - 统一语法的形态，通常是高版本语法编译成低版本的，比如 ES6 语法编译成 ES5 或 ES3。而 babel-polyfill 处理第二种情况 - 让目标浏览器支持所有特性，不管它是全局的，还是原型的，或是其它。这样，通过 babel-polyfill，不同浏览器在特性支持上就站到同一起跑线。

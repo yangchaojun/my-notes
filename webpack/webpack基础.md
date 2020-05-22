@@ -83,6 +83,16 @@ module.exports = {
   }
   ```
 
+- 上下文 context
+
+  ```js
+  module.exports = {
+  	context: path.resolve(__dirname, 'src')
+  }
+  ```
+
+  
+
 ### 5.核心概念之output
 
 output用来告诉webpack如何将编译后的文件输出到磁盘
@@ -418,7 +428,7 @@ module.exports = {
 	plugins: [new webpack.HotModuleReplacementPlugin()],
 	devServer: {
 		contentBase: './dist',
-		hot: true,
+		hot: true, // 如果webpack-dev-server 在package.json中配置了--hot选项，此处则不用配置hot: true
 	},
 }
 
