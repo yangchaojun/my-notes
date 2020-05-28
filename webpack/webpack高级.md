@@ -595,9 +595,10 @@ const { entry, htmlWebpackPlugins } = setPMA()
 ![](.\批注 2020-04-29 223510.png)
 
 ```js
+
 ```
 
-### 提取公共资源
+### 提取公共资源externals
 
 #### 基础库分离
 
