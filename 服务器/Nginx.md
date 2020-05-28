@@ -78,3 +78,30 @@ nginx -v
 | 关闭nginx ：快速停止nginx | nginx -s stop          |
 | 完整有序的停止nginx       | nginx -s quit          |
 
+
+
+在aliyun ces centos上安装nginx（阿里云基于centOS的部署）
+
+1. 安装yum  类似npm，下载模块以及模块的依赖
+   1. yum -y install pcre*  
+   2. yum -y install openssl*
+2. 下载weget 类似迅雷 下载文件
+   1. yum install wget
+3. 下载nginx
+   1. 下载到对应目录，一般都在usr/local
+   2. wget http://nginx.org/download/nginx-1.17.9.tar.gz
+4. 解压
+   1. tar -zxvf 文件名
+5. 编译安装
+   1. 进入解压的文件夹里面
+   2. ./configure
+   3. make -j4 && make install 会产生一个nginx文件夹，所有操作都在这个里面
+6. 进入nginx文件的sbin目录
+   1. 测试是否安装成功 
+   2. ./nginx 启动， ./nginx -t
+   3. 在阿里云实例里设置安全组
+      1. http/https
+      2. 1/65535
+      3. 0.0.0.0/0
+7. 项目部署
+8. 若改变了conf文件则需要重启nginx
