@@ -290,7 +290,7 @@ let express = require('express')
 let app = express()
 
 app.get('/api/user', (req, res) => {
-	res.json({ name: '刘小夕' })
+	res.json({ name: '杨超俊' })
 })
 
 app.listen(4000)
@@ -326,7 +326,7 @@ module.exports = {
 }
 ```
 
-重新执行 `npm run dev`，可以看到控制台打印出来了 `{name: "刘小夕"}`，实现了跨域。
+重新执行 `npm run dev`，可以看到控制台打印出来了 `{name: "杨超俊"}`，实现了跨域。
 
 大多情况，后端提供的接口并不包含 `/api`，即：`/user`，`/info`、`/list` 等，配置代理时，我们不可能罗列出每一个 api。
 
@@ -339,7 +339,7 @@ let express = require('express')
 let app = express()
 
 app.get('/user', (req, res) => {
-	res.json({ name: '刘小夕' })
+	res.json({ name: '杨超俊' })
 })
 
 app.listen(4000)
@@ -364,7 +364,7 @@ module.exports = {
 }
 ```
 
-重新执行 `npm run dev`，在浏览器中访问： `http://localhost:3000/`，控制台中也打印出了`{name: "刘小夕"}`，跨域成功，
+重新执行 `npm run dev`，在浏览器中访问： `http://localhost:3000/`，控制台中也打印出了`{name: "杨超俊"}`，跨域成功，
 
 ### 9.PostCSS 插件 autoprefixer 自动补齐样式
 
