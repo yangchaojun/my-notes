@@ -5,5 +5,5 @@
 - [入门 TypeScript 编写 React](https://zhuanlan.zhihu.com/p/69802663)
 - [使用Typescript装饰器来劫持React组件](https://segmentfault.com/a/1190000019888547)
 - [TypeScript笔记：React和泛型](https://segmentfault.com/a/1190000019898092)
-- 
+- [TypeScript 在 React 中使用总结](https://juejin.im/post/6844903684422254606#heading-29)
 
