@@ -186,3 +186,14 @@ test('an async feature', async () => {
 在当前Vue 3中直接调用`Vue.nextTick()` 会返回`undefined is not a function` 错误。
 
 由于这种变化，在使用支持`tree-shaking` 的模块打包工具打包后，没用被使用过的全局API会被剔除，这样可以产出更加小的代码包。
+
+#### 受影响的API
+
+以下API会被影响
+
+- `Vue.nextTick`
+- `Vue.observable` (replaced by `Vue.reactive`)
+- `Vue.version`
+- `Vue.compile` (only in full builds)
+- `Vue.set` (only in compat builds)
+- `Vue.delete` (only in compat builds)
